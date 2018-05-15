@@ -29,7 +29,7 @@ class Error
         register_shutdown_function([$this, 'appShutdown']);
     }
 
-    private function appError($errno, $errstr, $errfile, $errline, $errcontext)
+    public function appError($errno, $errstr, $errfile, $errline, $errcontext)
     {
         ob_start();
         ob_clean();
@@ -39,7 +39,7 @@ class Error
         die($_html);
     }
 
-    private function appException($e)
+    public function appException($e)
     {
         ob_start();
         ob_clean();
@@ -49,7 +49,7 @@ class Error
         die($_html);
     }
 
-    private function appShutdown()
+    public function appShutdown()
     {
         $error = error_get_last();
         if (!is_null($error) && in_array($error['type'], ['E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_RECOVERABLE_ERROR'])) {

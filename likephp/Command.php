@@ -41,19 +41,29 @@ class Command
     private function help($allow_act_list, $allow_app_list)
     {
         $help_string = '';
-        $allow_action_cmd_string = implode('|', $allow_act_list);
-        $allow_server_cmd_string = implode('|', $allow_app_list);
+        $allow_action_cmd_string = implode(' | ', $allow_act_list);
+        $allow_server_cmd_string = implode(' | ', $allow_app_list);
         $help_string .= '=====欢迎使用LikePHP服务=====' . PHP_EOL;
         $help_string .= '支持命令: ' . $allow_action_cmd_string . PHP_EOL;
         $help_string .= '支持应用: ' . $allow_server_cmd_string . PHP_EOL;
         $help_string .= '例子如下:' . PHP_EOL;
         $help_string .= 'php likephp [ ' . $allow_action_cmd_string . ' ] [ ' . $allow_server_cmd_string . ' ]:' . PHP_EOL;
-        $help_string .= '例如:php likephp ' . $allow_act_list[0] . ' ' . $allow_app_list[0] . PHP_EOL;
-        Clog::getInstance()->warn($help_string);
+        $help_string .= '例如:php likephp ' . $allow_act_list[0] . ' ' . $allow_app_list[0];
+        Clog::getInstance()->write($help_string);
         die();
     }
 
     private function start($app_name)
+    {
+        //待完善...
+        //待完善...
+        //待完善...
+        $config = Config::getInstance()->get($app_name . '.server');
+        $callback_name = '\\likephp\\event\\' . ucfirst($config['type']) . 'Event';
+        Server::getInstance()->run($config, $callback_name);
+    }
+
+    private function stop($app_name)
     {
         //待完善...
         //待完善...

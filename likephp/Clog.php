@@ -58,13 +58,20 @@ class Clog
         echo $string;
     }
 
-    private function getString($type, $log)
+    public function write($log)
+    {
+        $string = $this->getString('INFO', $log, false, false);
+        echo $string;
+    }
+
+    private function getString($type, $log, $show_time = true, $show_type = true)
     {
         $string = '';
         if (in_array($type, array_keys($this->typeColor))) {
-            $now_time = date('Y-m-d H:i:s');
+            $now_time = $show_time ? date('Y-m-d H:i:s') : '';
             $type_color = $this->typeColor[$type];
-            $string = "\033[1;{$type_color}m {$now_time} {$type} {$log} \033[0m ".PHP_EOL;
+            $type_string = $show_type ? "[ {$type} ]" : '';
+            $string = "\033[1;{$type_color}m{$now_time}{$type_string}{$log}\033[0m" . PHP_EOL;
         }
         return $string;
     }
