@@ -35,6 +35,8 @@ class LikePHP
         $this->registerAutoLoad();
         //5.加载配置
         $this->loadConf();
+        //6.注册异常
+        $this->registerError();
     }
 
     /**
@@ -45,7 +47,8 @@ class LikePHP
         //校验php版本
         $php_version_limit = '7.0.0';
         if (version_compare(PHP_VERSION, $php_version_limit, '<')) {
-            die('php版本(' . PHP_VERSION . ')必须大于' . $php_version_limit);
+            Clog::getInstance()->error('php版本(' . PHP_VERSION . ')必须大于' . $php_version_limit);
+            die();
         }
     }
 
@@ -123,6 +126,11 @@ class LikePHP
         if (file_exists($composer_autoload_file)) {
             require_once $composer_autoload_file;
         }
+    }
+
+    private function registerError()
+    {
+        Error::getInstance()->register();
     }
 
     public function run()

@@ -49,7 +49,8 @@ class Command
         $help_string .= '例子如下:' . PHP_EOL;
         $help_string .= 'php likephp [ ' . $allow_action_cmd_string . ' ] [ ' . $allow_server_cmd_string . ' ]:' . PHP_EOL;
         $help_string .= '例如:php likephp ' . $allow_act_list[0] . ' ' . $allow_app_list[0] . PHP_EOL;
-        die($help_string);
+        Clog::getInstance()->warn($help_string);
+        die();
     }
 
     private function start($app_name)
@@ -58,8 +59,7 @@ class Command
         //待完善...
         //待完善...
         $config = Config::getInstance()->get($app_name . '.server');
-        $callback_name = '\\likephp\\event\\' . ucfirst($config['type']).'Event';
-        $server = new Server($config, $callback_name);
-        $server->run();
+        $callback_name = '\\likephp\\event\\' . ucfirst($config['type']) . 'Event';
+        Server::getInstance()->run($config, $callback_name);
     }
 }
